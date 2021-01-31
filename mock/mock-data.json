@@ -1,0 +1,24 @@
+{
+  "schools": [{
+    "id": 14459,
+    "name": "福山花园外国语学校",
+    "addr": "灵山路600弄",
+    "district": "浦东新区",
+    "isJunior": false,
+    "level": 1
+  }, {
+    "id": 3606,
+    "name": "明珠小学[A]区",
+    "addr": "崂山路551弄",
+    "district": "浦东新区",
+    "isJunior": true,
+    "level": 1
+  }, {
+    "id": 3618,
+    "name": "明珠小学[B]区",
+    "addr": "崂山路638弄",
+    "district": "浦东新区",
+    "isJunior": true,
+    "level": 1
+  }]
+}
