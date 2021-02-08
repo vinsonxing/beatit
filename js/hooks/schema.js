@@ -19,7 +19,7 @@ export const houseListSchemas = [
   },
   {
     field: 'positionInfo',
-    selector: '.sellListContent.LOGCLICKDATA li .positionInfo a',
+    selector: '.sellListContent.LOGCLICKDATA li .positionInfo',
     type: 'String',
   },
   {
@@ -57,5 +57,19 @@ export const houseDetailSchema = [
     selector: '.m-content .housePic .list img',
     type: 'String',
     attribute: 'src',
+  },
+];
+
+export const communityDetailScheme = [
+  {
+    field: 'vill',
+    selector: '#sem_card .agentCardSemInfo .agentCardResblockTitle',
+    type: 'String',
+  },
+  {
+    field: 'roadarea',
+    selector:
+      '#sem_card .agentCardSemInfo .agentCardResblockTitle .agentCardResblockSubTitle',
+    type: 'String',
   },
 ];

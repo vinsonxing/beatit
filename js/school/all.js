@@ -70,18 +70,17 @@ export const AllSchoolList = (props) => {
       duo: curSchool.duo,
       level: curSchool.level,
     });
-    console.log(swiperRef.current);
-    swiperRef.current.close();
+    swiperRef.current && swiperRef.current.close();
   };
 
   useEffect(() => {
     setLoading(true);
     const init = async () => {
       const iSchools = await getInterestedSchools();
-      allSchools.forEach((a) => {
-        a.added = !!iSchools.find((i) => i.id === a.value);
-      });
-      setTargetSchools(allSchools);
+      const tSchools = allSchools.filter(
+        (a) => !iSchools.find((i) => i.id === a.value),
+      );
+      setTargetSchools(tSchools);
       setLoading(false);
     };
     init();
@@ -138,13 +137,12 @@ export const AllSchoolList = (props) => {
           </View>
         )}
         {targetSchools.map((l, i) => {
-          const actions = l.added ? {} : {renderRightActions: addButton};
           return (
             <Swipeable
               key={i}
               ref={swiperRef}
               rightThreshold={40}
-              {...actions}
+              renderRightActions={addButton}
               onSwipeableRightWillOpen={() => {
                 let s = l;
                 setCurSchool(s);

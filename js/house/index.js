@@ -55,11 +55,13 @@ export const HouseList = (props) => {
   const {community} = route.params;
 
   useEffect(() => {
+    console.log('test start');
     navigation.setParams({title: community});
     getHouseList(community);
+    console.log('test end');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  console.log('render');
   return (
     <ScrollView
       style={STYLES.Styles.FlexOne}
@@ -120,7 +122,7 @@ export const HouseList = (props) => {
                             return null;
                           }
                           return (
-                            <View style={localStyles.tagOuter}>
+                            <View key={idx} style={localStyles.tagOuter}>
                               <Text style={localStyles.tagText}>{t}</Text>
                             </View>
                           );

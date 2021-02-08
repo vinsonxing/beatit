@@ -64,6 +64,48 @@ const useDao = () => {
     }
   };
 
+  const addInterestedCommunity = async (community, params = {}) => {
+    try {
+      setIsSavingData(true);
+      setIsSaved(false);
+      // refresh interested school list
+      let iCommunities = await Store.getData(Constants.INTERESTED_COMMUNITIES);
+      if (iCommunities == null) {
+        iCommunities = [];
+      }
+      // filter out the old data is exists
+      const newData = iCommunities.filter((s) => s.vill !== community.vill);
+      newData.push(community);
+      newData.sort();
+      await Store.storeData(Constants.INTERESTED_COMMUNITIES, newData);
+      setIsSaved(true);
+    } catch (error) {
+      console.warn('Should not go here');
+    } finally {
+      setIsSavingData(false);
+    }
+  };
+
+  const getInterestedCommunities = async () => {
+    const iCommunities = await Store.getData(Constants.INTERESTED_COMMUNITIES);
+    return Array.isArray(iCommunities) && iCommunities.length > 0
+      ? iCommunities
+      : [];
+  };
+
+  const removeInterestedCommunity = async (community) => {
+    const iCommunities = await getInterestedCommunities();
+    if (Array.isArray(iCommunities)) {
+      const remainCommunities = iCommunities.filter(
+        (s) => s.vill !== community,
+      );
+      await Store.storeData(
+        Constants.INTERESTED_COMMUNITIES,
+        remainCommunities,
+      );
+    }
+  };
+
   return {
     state: {
       isSavingData,
@@ -72,6 +114,9 @@ const useDao = () => {
     addInterestedSchool,
     getInterestedSchools,
     removeInterestedSchool,
+    addInterestedCommunity,
+    getInterestedCommunities,
+    removeInterestedCommunity,
   };
 };
 

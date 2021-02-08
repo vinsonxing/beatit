@@ -170,14 +170,16 @@ class HtmlParser: NSObject {
   func normalizeResult(fields: [String: [Item]], count: Int) -> [[String:Any]] {
     var ret:[[String:Any]] = [];
     // find base items
-    for n in 0...(count-1) {
-      var retItem: [String: Any] = [:]
-      
-      for (field, values) in fields {
-        // title
-        retItem[field] = normalizeValue(item: values[n])
+    if (count > 0) {
+      for n in 0...(count-1) {
+        var retItem: [String: Any] = [:]
+        
+        for (field, values) in fields {
+          // title
+          retItem[field] = normalizeValue(item: values[n])
+        }
+        ret.append(retItem)
       }
-      ret.append(retItem)
     }
     return ret
   }
@@ -206,6 +208,8 @@ class HtmlParser: NSObject {
   
   return ret
 }
+  
+  @objc static func requiresMainQueueSetup() -> Bool { return true }
 
 //  func findValue(cells: [[String:Any]], field: String) -> [String: Any] {
 //    for cell in cells {

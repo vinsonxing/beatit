@@ -1,31 +1,22 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 // import {NativeModules} from 'react-native';
-import {Button} from 'react-native-elements';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import SchoolList from './js/school';
+import Home from './js/home';
 import AllSchoolList from './js/school/all';
 import ManageSchool from './js/school/manageSchool';
 import CommunityList from './js/community';
 import HouseList from './js/house';
 import HouseDetail from './js/house/detail';
+import SearchList from './js/community/searchList';
+import TagSchool from './js/home/tagSchool';
 // import houses from './mock/house.json';
 
 // const {HtmlParser} = NativeModules;
 
 const Stack = createStackNavigator();
-const EDIT_MODE = '完成';
-const VIEW_MODE = '管理';
-
 function App() {
-  const [editMode, setEditMode] = useState(false);
-
-  const setMode = (navigation, isEditMode) => {
-    setEditMode(isEditMode);
-    navigation.setParams({editMode: isEditMode});
-  };
-
   useEffect(() => {
     const aa = async () => {
       // console.log(HtmlParser);
@@ -101,33 +92,12 @@ function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="SchoolList">
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
-          name="SchoolList"
-          component={SchoolList}
+          name="Home"
+          component={Home}
           options={({navigation}) => ({
-            headerTitle: '感兴趣的学校',
-            headerLeft: () => (
-              <Button
-                containerStyle={{left: 10}}
-                onPress={() => {
-                  setMode(navigation, !editMode);
-                }}
-                title={editMode ? EDIT_MODE : VIEW_MODE}
-                type="clear"
-              />
-            ),
-            headerRight: () => (
-              <Button
-                containerStyle={{right: 10}}
-                onPress={() => {
-                  editMode && setMode(navigation, false);
-                  navigation.navigate('AllSchoolList');
-                }}
-                title="添加"
-                type="clear"
-              />
-            ),
+            headerTitle: '感兴趣的',
           })}
         />
         <Stack.Screen
@@ -159,6 +129,20 @@ function App() {
           component={HouseDetail}
           options={({route}) => ({
             headerTitle: '房屋详情',
+          })}
+        />
+        <Stack.Screen
+          name="SearchList"
+          component={SearchList}
+          options={({route}) => ({
+            headerTitle: '小区列表',
+          })}
+        />
+        <Stack.Screen
+          name="TagSchool"
+          component={TagSchool}
+          options={({route}) => ({
+            headerTitle: '小区列表',
           })}
         />
       </Stack.Navigator>

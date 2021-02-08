@@ -10,6 +10,10 @@ const getCommunitiesURL = (code) =>
 const getHouseListURL = (community) =>
   `https://sh.lianjia.com/ershoufang/rs${encodeURI(community)}`;
 
+const getCommunityListByKeywordURL = (kw) =>
+  `https://sh.lianjia.com/api/headerSearch?channel=ershoufang&cityId=310000&keyword=${encodeURI(
+    kw,
+  )}`;
 const useApi = () => {
   const [communityList, setCommunityList] = useState([]);
   const [isFetchingCommunityList, setIsFetchingCommunityList] = useState(false);
@@ -22,6 +26,20 @@ const useApi = () => {
   const [houseDetail, setHouseDetail] = useState([]);
   const [isFetchingHouse, setIsFetchingHouse] = useState(false);
   const [isHouseError, setIsHouseError] = useState(false);
+
+  const [communityDetail, setCommunityDetail] = useState([]);
+  const [isFetchingCommunity, setIsFetchingCommunity] = useState(false);
+  const [isCommunityError, setIsCommunityError] = useState(false);
+
+  const [communityListByKeyword, setCommunityListByKeyword] = useState([]);
+  const [
+    isFetchingCommunityListByKeyword,
+    setIsFetchingCommunityListByKeyword,
+  ] = useState(false);
+  const [
+    isCommunityListByKeywordError,
+    setIsCommunityListByKeywordError,
+  ] = useState(false);
 
   const getCommunityList = async (queryOptions) => {
     const {schoolCode} = queryOptions;
@@ -74,6 +92,50 @@ const useApi = () => {
     }
   };
 
+  const getCommunityDetail = async (url) => {
+    try {
+      setIsCommunityError(false);
+      setIsFetchingCommunity(true);
+      const result = await HtmlParser.parse(url, Schema.communityDetailScheme);
+      if (Array.isArray(result) && result.length > 0) {
+        setCommunityDetail(result[0]);
+        return result[0];
+      }
+      return {};
+    } catch (error) {
+      setIsCommunityError(true);
+      return {};
+    } finally {
+      setIsFetchingCommunity(false);
+    }
+  };
+
+  const getCommunityListByKeyword = async (kw) => {
+    try {
+      setIsCommunityListByKeywordError(false);
+      setIsFetchingCommunityListByKeyword(true);
+      const url = getCommunityListByKeywordURL(kw);
+      console.log(url);
+      const result = await HttpService.getData(url);
+      let data = [];
+      if (
+        result.errno === 0 &&
+        result.data &&
+        result.data.data &&
+        Array.isArray(result.data.data.result)
+      ) {
+        data = result.data.data.result;
+      }
+      setCommunityListByKeyword(data);
+      return data;
+    } catch (error) {
+      setIsCommunityListByKeywordError(true);
+      return [];
+    } finally {
+      setIsFetchingCommunityListByKeyword(false);
+    }
+  };
+
   return {
     state: {
       communityList,
@@ -87,10 +149,20 @@ const useApi = () => {
       houseDetail,
       isFetchingHouse,
       isHouseError,
+
+      communityDetail,
+      isFetchingCommunity,
+      isCommunityError,
+
+      communityListByKeyword,
+      isFetchingCommunityListByKeyword,
+      isCommunityListByKeywordError,
     },
     getCommunityList,
     getHouseList,
     getHouseDetail,
+    getCommunityDetail,
+    getCommunityListByKeyword,
   };
 };
 

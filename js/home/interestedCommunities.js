@@ -1,27 +1,35 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {
   ScrollView,
   Alert,
   TouchableOpacity,
   RefreshControl,
+  View,
 } from 'react-native';
-import {ListItem, Avatar, Icon, Badge} from 'react-native-elements';
+import {ListItem, Icon, Badge} from 'react-native-elements';
 import useDao from '../hooks/useDao';
 import STYLES from '../../styles';
 
-const JUNIOR_AVATAR_URI = require('../../images/junior.png');
-const PRIMARY_AVATAR_URI = require('../../images/primary.png');
 const localStyles = {
-  badge: {position: 'absolute', right: 20, top: 0},
-  level: {position: 'absolute', right: 20, top: 30},
+  price: {position: 'absolute', right: 20, top: 30},
+  noData: {flex: 1, justifyContent: 'center', top: 260},
+  badgeCnt: {
+    flex: 1,
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    right: 20,
+  },
 };
-export const SchoolList = (props) => {
-  const [schools, setSchools] = useState([]);
+export const InterestedCommunityList = (props) => {
+  const [communities, setCommunities] = useState([]);
   const {navigation, route} = props;
   const editMode = route.params && route.params.editMode;
   const [refreshing, setRefreshing] = React.useState(false);
 
-  const {getInterestedSchools, removeInterestedSchool} = useDao();
+  const {getInterestedCommunities, removeInterestedCommunity} = useDao();
 
   useEffect(() => {
     async function getData() {
@@ -31,10 +39,10 @@ export const SchoolList = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const showAlert = (school) =>
+  const showAlert = (community) =>
     Alert.alert(
       '删除',
-      `确定要删除[${school.name}]吗?`,
+      `确定要删除[${community.vill}]吗?`,
       [
         {
           text: '取消',
@@ -44,7 +52,7 @@ export const SchoolList = (props) => {
         {
           text: '确定',
           onPress: async () => {
-            await removeInterestedSchool(school.id);
+            await removeInterestedCommunity(community.vill);
             await reload();
           },
         },
@@ -52,8 +60,8 @@ export const SchoolList = (props) => {
       {cancelable: false},
     );
   const reload = async () => {
-    const iSchools = await getInterestedSchools();
-    setSchools(iSchools);
+    const iCommunities = await getInterestedCommunities();
+    setCommunities(iCommunities);
   };
 
   const refresh = async () => {
@@ -64,11 +72,20 @@ export const SchoolList = (props) => {
 
   return (
     <ScrollView
-      style={STYLES.Styles.FlexOne}
+      style={[STYLES.Styles.FlexOne]}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={refresh} />
       }>
-      {schools.map((l, i) => (
+      {communities.length === 0 && (
+        <Icon
+          containerStyle={localStyles.noData}
+          name="database-search"
+          type="material-community"
+          color={STYLES.Colors.lightSilver}
+          size={100}
+        />
+      )}
+      {communities.map((l, i) => (
         <ListItem key={i} bottomDivider>
           {editMode && (
             <TouchableOpacity
@@ -78,42 +95,29 @@ export const SchoolList = (props) => {
               <Icon name="circle-with-minus" type="entypo" color="red" />
             </TouchableOpacity>
           )}
-          <Avatar
-            containerStyle={STYLES.Styles.BackgroundColor()}
-            size="medium"
-            rounded
-            source={l.isJunior ? JUNIOR_AVATAR_URI : PRIMARY_AVATAR_URI}
-          />
           <TouchableOpacity
             style={[STYLES.Styles.FlexOne, STYLES.Styles.FlexRowDirection]}
             onPress={() => {
-              let curSchool = l;
+              let curComm = l;
               if (editMode) {
-                navigation.navigate('ManageSchool', curSchool);
+                navigation.navigate('TagSchool', {
+                  vill: curComm.vill,
+                  school: curComm.school,
+                });
               } else {
-                navigation.navigate('CommunityList', {
-                  communities: curSchool.communities,
-                  school: curSchool,
+                navigation.navigate('HouseList', {
+                  community: curComm.vill,
                 });
               }
             }}>
-            {l.level && (
-              <Badge
-                status={l.level < 3 ? 'success' : 'primary'}
-                value={`梯队${l.level}`}
-                containerStyle={localStyles.level}
-              />
-            )}
-            {l.duo && (
-              <Badge
-                status="success"
-                value="双学区或一贯制"
-                containerStyle={localStyles.badge}
-              />
+            {l.school && (
+              <View style={localStyles.badgeCnt}>
+                <Badge status={'primary'} value={l.school} />
+              </View>
             )}
             <ListItem.Content>
-              <ListItem.Title>{l.name}</ListItem.Title>
-              <ListItem.Subtitle>{l.addr}</ListItem.Subtitle>
+              <ListItem.Title>{l.vill}</ListItem.Title>
+              <ListItem.Subtitle>{l.roadarea}</ListItem.Subtitle>
             </ListItem.Content>
             <ListItem.Chevron />
           </TouchableOpacity>
@@ -123,4 +127,4 @@ export const SchoolList = (props) => {
   );
 };
 
-export default SchoolList;
+export default InterestedCommunityList;
