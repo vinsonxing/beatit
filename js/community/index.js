@@ -1,5 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {ScrollView, TouchableOpacity, Animated, Text} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  ScrollView,
+  View,
+  ActivityIndicator,
+  TouchableOpacity,
+  Animated,
+  Text,
+} from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {ListItem} from 'react-native-elements';
 import useDao from '../hooks/useDao';
@@ -7,7 +14,7 @@ import STYLES from '../../styles';
 
 const localStyle = {
   addBtn: {
-    width: 72,
+    width: 192,
     height: '100%',
   },
 };
@@ -18,6 +25,7 @@ export const CommunityList = (props) => {
     addInterestedCommunity,
     getInterestedCommunities,
   } = useDao();
+  const swiperRef = useRef([]);
   const [curCommunity, setCurCommunity] = useState();
   const [swiping, setSwiping] = useState(false);
   const {navigation, route} = props;
@@ -33,14 +41,15 @@ export const CommunityList = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const addCommunity = async () => {
+  const addCommunity = async (idx) => {
     await addInterestedCommunity(curCommunity);
+    swiperRef.current[idx]?.close();
   };
 
-  const addButton = (progress) => {
+  const addButton = (progress, idx) => {
     const trans = progress.interpolate({
       inputRange: [0, 1],
-      outputRange: [72, 0],
+      outputRange: [192, 0],
     });
 
     return (
@@ -52,7 +61,7 @@ export const CommunityList = (props) => {
             STYLES.Styles.Center,
             STYLES.Styles.BackgroundColor(STYLES.Colors.red),
           ]}
-          onPress={addCommunity}>
+          onPress={() => addCommunity(idx)}>
           <Text style={STYLES.Styles.Color(STYLES.Colors.white)}>添加</Text>
         </TouchableOpacity>
       </Animated.View>
@@ -61,11 +70,22 @@ export const CommunityList = (props) => {
 
   return (
     <ScrollView style={STYLES.Styles.FlexOne}>
+      {daoState.isSavingData && (
+        <View style={[STYLES.Styles.LoadingStyle, STYLES.Styles.Center]}>
+          <ActivityIndicator size="large" />
+        </View>
+      )}
       {validCommunities.map((l, i) => (
         <Swipeable
           key={i}
+          ref={(el) => {
+            if (!swiperRef.current) {
+              swiperRef.current = [];
+            }
+            swiperRef.current[i] = el;
+          }}
           rightThreshold={40}
-          renderRightActions={addButton}
+          renderRightActions={(p) => addButton(p, i)}
           onSwipeableRightWillOpen={() => {
             let s = l;
             setCurCommunity(s);

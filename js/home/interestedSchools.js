@@ -54,7 +54,7 @@ export const InterestedSchoolList = (props) => {
     );
   const reload = async () => {
     const iSchools = await getInterestedSchools();
-    setSchools(iSchools);
+    setSchools(iSchools.sort((a, b) => a.level - b.level));
   };
 
   const refresh = async () => {

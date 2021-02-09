@@ -36,7 +36,7 @@ export const HouseDetail = (props) => {
           <ActivityIndicator size="large" />
         </View>
       )}
-      {(!houseDetail || houseDetail.length === 0) && (
+      {(!houseDetail || houseDetail.length === 0) && !isFetchingHouse && (
         <Icon
           containerStyle={localStyles.noData}
           name="database-search"

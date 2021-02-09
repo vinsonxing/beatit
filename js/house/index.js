@@ -108,7 +108,10 @@ export const HouseList = (props) => {
                       {h.positionInfo}
                     </ListItem.Subtitle>
                     <ListItem.Subtitle style={localStyles.itemPadding()}>
-                      {h.followInfo}
+                      {h.followInfo && h.followInfo.split('/')[0]}
+                    </ListItem.Subtitle>
+                    <ListItem.Subtitle style={localStyles.itemPadding()}>
+                      {h.followInfo && h.followInfo.split('/')[1]}
                     </ListItem.Subtitle>
                     <View
                       style={[

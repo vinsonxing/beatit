@@ -26,29 +26,30 @@ const localStyles = {
 // format schools
 const allSchools = [];
 const {primary, junior} = schools;
-primary.forEach((p) => {
-  if (p.level) {
+primary
+  .filter((pp) => pp.level !== undefined)
+  .sort((a, b) => a.level - b.level)
+  .forEach((p) => {
     let sch = {...p, primary: false};
     if (duoSchools.find((ds) => ds.primary.includes(p.value))) {
       sch.duo = true;
     }
     allSchools.push(sch);
-  }
-});
-junior.forEach((j) => {
-  if (j.level) {
+  });
+junior
+  .filter((jj) => jj.level !== undefined)
+  .sort((a, b) => a.level - b.level)
+  .forEach((j) => {
     let sch = {...j, junior: false};
     if (duoSchools.find((ds) => ds.junior.includes(j.value))) {
       sch.duo = true;
     }
     allSchools.push({...j, junior: true});
-  }
-});
+  });
 
 const localStyle = {
   addBtn: {
-    width: 72,
-    height: '100%',
+    width: 192,
   },
 };
 
@@ -61,17 +62,7 @@ export const AllSchoolList = (props) => {
 
   const {state: apiState, getCommunityList} = useApi();
   const {state: daoState, addInterestedSchool, getInterestedSchools} = useDao();
-  const swiperRef = useRef({});
-
-  const addSchool = async () => {
-    const communities = await getCommunityList({schoolCode: curSchool.value});
-    addInterestedSchool(curSchool.value, communities, {
-      junior: curSchool.junior,
-      duo: curSchool.duo,
-      level: curSchool.level,
-    });
-    swiperRef.current && swiperRef.current.close();
-  };
+  const swiperRef = useRef([]);
 
   useEffect(() => {
     setLoading(true);
@@ -87,13 +78,17 @@ export const AllSchoolList = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (daoState.isSaved) {
-      swiperRef.current && swiperRef.current.close();
-    }
-  }, [daoState.isSaved]);
+  const addSchool = async (idx) => {
+    const communities = await getCommunityList({schoolCode: curSchool.value});
+    await addInterestedSchool(curSchool.value, communities, {
+      junior: curSchool.junior,
+      duo: curSchool.duo,
+      level: curSchool.level,
+    });
+    swiperRef.current[idx]?.close();
+  };
 
-  const addButton = (progress) => {
+  const addButton = (progress, idx) => {
     const trans = progress.interpolate({
       inputRange: [0, 1],
       outputRange: [72, 0],
@@ -108,7 +103,7 @@ export const AllSchoolList = (props) => {
             STYLES.Styles.Center,
             STYLES.Styles.BackgroundColor(STYLES.Colors.red),
           ]}
-          onPress={addSchool}>
+          onPress={() => addSchool(idx)}>
           <Text style={STYLES.Styles.Color(STYLES.Colors.white)}>添加</Text>
         </TouchableOpacity>
       </Animated.View>
@@ -140,9 +135,14 @@ export const AllSchoolList = (props) => {
           return (
             <Swipeable
               key={i}
-              ref={swiperRef}
+              ref={(el) => {
+                if (!swiperRef.current) {
+                  swiperRef.current = [];
+                }
+                swiperRef.current[i] = el;
+              }}
               rightThreshold={40}
-              renderRightActions={addButton}
+              renderRightActions={(p) => addButton(p, i)}
               onSwipeableRightWillOpen={() => {
                 let s = l;
                 setCurSchool(s);

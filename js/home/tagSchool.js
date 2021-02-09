@@ -1,7 +1,7 @@
 /* eslint-disable radix */
-import React, {useState, createRef} from 'react';
+import React, {useState} from 'react';
 import {Input, Card, Button} from 'react-native-elements';
-import {Text, TouchableOpacity, View, ScrollView} from 'react-native';
+import {ScrollView} from 'react-native';
 import useDao from '../hooks/useDao';
 import STYLES from '../../styles';
 
@@ -38,25 +38,6 @@ export const TagSchool = (props) => {
       </Card>
     </ScrollView>
   );
-};
-
-const styles = {
-  hiddenPicker: {
-    position: 'absolute',
-    left: -1000,
-  },
-  pickerContainer: {
-    height: 40,
-    borderBottomColor: STYLES.Colors.grey0,
-    borderBottomWidth: 1,
-    marginHorizontal: 10,
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  pickerContent: {
-    fontSize: 18,
-    top: 10,
-  },
 };
 
 export default TagSchool;

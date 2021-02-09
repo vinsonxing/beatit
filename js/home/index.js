@@ -10,7 +10,7 @@ const VIEW_MODE = '管理';
 export const Home = (props) => {
   const [editMode, setEditMode] = useState(false);
   const {navigation} = props;
-  const [curIndex, setCurIndex] = useState(1);
+  const [curIndex, setCurIndex] = useState(0);
 
   const buttons = ['小区', '学校'];
 

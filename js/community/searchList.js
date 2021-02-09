@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   ScrollView,
   TouchableOpacity,
@@ -16,7 +16,7 @@ import STYLES from '../../styles';
 
 const localStyles = {
   addBtn: {
-    width: 72,
+    width: 192,
     height: '100%',
   },
   badgeCnt: {
@@ -33,34 +33,27 @@ const localStyles = {
 };
 
 export const CommunitySearchList = (props) => {
+  const swiperRef = useRef([]);
   const {state: daoState, addInterestedCommunity} = useDao();
   const {state: cListState, getCommunityListByKeyword} = useApi();
   const [curCommunity, setCurCommunity] = useState();
   const [swiping, setSwiping] = useState(false);
   const [keyword, setKeyword] = useState('');
   const [validCommunities, setValidCommunities] = useState([]);
-  const {navigation, route} = props;
-  // useEffect(() => {
-  //   navigation.setParams({title: school.name});
-  //   const test = async () => {
-  //     const cc = await getInterestedCommunities();
-  //     console.log(cc);
-  //   };
-  //   test();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  const {navigation} = props;
 
-  const addCommunity = async () => {
+  const addCommunity = async (idx) => {
     await addInterestedCommunity({
       vill: curCommunity.title,
       roadarea: curCommunity.region,
     });
+    swiperRef.current[idx]?.close();
   };
 
-  const addButton = (progress) => {
+  const addButton = (progress, idx) => {
     const trans = progress.interpolate({
       inputRange: [0, 1],
-      outputRange: [72, 0],
+      outputRange: [192, 0],
     });
 
     return (
@@ -72,21 +65,12 @@ export const CommunitySearchList = (props) => {
             STYLES.Styles.Center,
             STYLES.Styles.BackgroundColor(STYLES.Colors.red),
           ]}
-          onPress={addCommunity}>
+          onPress={() => addCommunity(idx)}>
           <Text style={STYLES.Styles.Color(STYLES.Colors.white)}>添加</Text>
         </TouchableOpacity>
       </Animated.View>
     );
   };
-
-  //   {title: "盛世宝邸", region: "社区", count: 10,…}
-  // channel: "ershoufang"
-  // count: 10
-  // fe_channel: "ershoufang"
-  // keyword: "盛世"
-  // region: "社区"
-  // title: "盛世宝邸"
-  // url: "/ershoufang/sq5018226369562934/?sug=%E7%9B%9B%E4%B8%96%E5%AE%9D%E9%82%B8"
 
   const searchCommunities = async (text) => {
     setKeyword(text);
@@ -109,7 +93,8 @@ export const CommunitySearchList = (props) => {
         style={STYLES.Styles.FlexOne}
         scrollEnabled={!swiping}
         contentContainerStyle={STYLES.Styles.FlexOne}>
-        {cListState.isFetchingCommunityListByKeyword && (
+        {(cListState.isFetchingCommunityListByKeyword ||
+          daoState.isSavingData) && (
           <View
             style={[
               STYLES.Styles.FlexOne,
@@ -123,8 +108,14 @@ export const CommunitySearchList = (props) => {
           validCommunities.map((l, i) => (
             <Swipeable
               key={i}
+              ref={(el) => {
+                if (!swiperRef.current) {
+                  swiperRef.current = [];
+                }
+                swiperRef.current[i] = el;
+              }}
               rightThreshold={40}
-              renderRightActions={addButton}
+              renderRightActions={(p) => addButton(p, i)}
               onSwipeableRightWillOpen={() => {
                 let s = l;
                 setCurCommunity(s);
