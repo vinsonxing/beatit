@@ -79,7 +79,10 @@ export const AllSchoolList = (props) => {
   }, []);
 
   const addSchool = async (idx) => {
-    const communities = await getCommunityList({schoolCode: curSchool.value});
+    const communities = await getCommunityList({
+      schoolCode: curSchool.value,
+      level: curSchool.junior ? 396 : 397,
+    });
     await addInterestedSchool(curSchool.value, communities, {
       junior: curSchool.junior,
       duo: curSchool.duo,

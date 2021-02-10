@@ -4,8 +4,8 @@ import {HttpService} from '../utils/dal';
 import * as Schema from './schema';
 
 const {HtmlParser} = NativeModules;
-const getCommunitiesURL = (code) =>
-  `http://s1.shanghaicity.openservice.kankanews.com/searchschool/schoolsearch.php?act=getresult&condition=school&getid=${code}&level=397&area=420`;
+const getCommunitiesURL = (code, level) =>
+  `http://s1.shanghaicity.openservice.kankanews.com/searchschool/schoolsearch.php?act=getresult&condition=school&getid=${code}&level=${level}&area=420`;
 
 const getHouseListURL = (community) =>
   `https://sh.lianjia.com/ershoufang/rs${encodeURI(community)}`;
@@ -42,11 +42,11 @@ const useApi = () => {
   ] = useState(false);
 
   const getCommunityList = async (queryOptions) => {
-    const {schoolCode} = queryOptions;
+    const {schoolCode, level} = queryOptions;
     try {
       setIsCommunityListError(false);
       setIsFetchingCommunityList(true);
-      const url = getCommunitiesURL(schoolCode);
+      const url = getCommunitiesURL(schoolCode, level);
       const result = await HttpService.getData(url);
       setCommunityList(result);
       return result;
