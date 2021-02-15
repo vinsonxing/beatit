@@ -53,7 +53,16 @@ export const InterestedSchoolList = (props) => {
       {cancelable: false},
     );
   const reload = async () => {
-    const iSchools = await getInterestedSchools();
+    let iSchools = await getInterestedSchools();
+    console.log(
+      iSchools.map((i) => {
+        i.communities = undefined;
+        return i;
+      }),
+    );
+    // if (Array.isArray(iSchools) && iSchools.length === 0) {
+    // iSchools = DEFAULT_SCHOOLS;
+    // }
     setSchools(iSchools.sort((a, b) => a.level - b.level));
   };
 
@@ -92,7 +101,7 @@ export const InterestedSchoolList = (props) => {
             containerStyle={STYLES.Styles.BackgroundColor()}
             size="medium"
             rounded
-            source={l.isJunior ? JUNIOR_AVATAR_URI : PRIMARY_AVATAR_URI}
+            source={l.junior ? JUNIOR_AVATAR_URI : PRIMARY_AVATAR_URI}
           />
           <TouchableOpacity
             style={[STYLES.Styles.FlexOne, STYLES.Styles.FlexRowDirection]}
@@ -102,7 +111,7 @@ export const InterestedSchoolList = (props) => {
                 navigation.navigate('ManageSchool', curSchool);
               } else {
                 navigation.navigate('CommunityList', {
-                  communities: curSchool.communities,
+                  communities: curSchool.communities || [],
                   school: curSchool,
                 });
               }

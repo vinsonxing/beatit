@@ -19,6 +19,8 @@
 		4C16D5D73ECA0529BCF33CB8 /* libPods-beatit-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 167014730476B32D2966B7DF /* libPods-beatit-tvOSTests.a */; };
 		540D512CCBAA12CDD150D1E1 /* libPods-beatit-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 76390A718F32D9F7C98D25D5 /* libPods-beatit-tvOS.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		90BD563925DA23CF002A7F48 /* GitHubBase64Decoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 90BD563825DA23CE002A7F48 /* GitHubBase64Decoder.m */; };
+		90BD563F25DA240A002A7F48 /* GitHubBase64Decoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BD563E25DA240A002A7F48 /* GitHubBase64Decoder.swift */; };
 		90ED2BFD25BDB04900ADFF04 /* HtmlParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90ED2BFC25BDB04900ADFF04 /* HtmlParser.swift */; };
 		90ED2D4325BF1A5E00ADFF04 /* HtmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 90ED2D4225BF1A5E00ADFF04 /* HtmlParser.m */; };
 		9FA55F66A4F75637E58960BD /* libPods-beatit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA7C97F68A047303E80169D7 /* libPods-beatit.a */; };
@@ -60,6 +62,8 @@
 		59C5E74131D1BA559A2CA844 /* Pods-beatit-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-beatit-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-beatit-tvOSTests/Pods-beatit-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		76390A718F32D9F7C98D25D5 /* libPods-beatit-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-beatit-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = beatit/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		90BD563825DA23CE002A7F48 /* GitHubBase64Decoder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GitHubBase64Decoder.m; sourceTree = "<group>"; };
+		90BD563E25DA240A002A7F48 /* GitHubBase64Decoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubBase64Decoder.swift; sourceTree = "<group>"; };
 		90ED2BFB25BDB04900ADFF04 /* beatit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "beatit-Bridging-Header.h"; sourceTree = "<group>"; };
 		90ED2BFC25BDB04900ADFF04 /* HtmlParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlParser.swift; sourceTree = "<group>"; };
 		90ED2D4225BF1A5E00ADFF04 /* HtmlParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HtmlParser.m; sourceTree = "<group>"; };
@@ -140,6 +144,8 @@
 				90ED2BFC25BDB04900ADFF04 /* HtmlParser.swift */,
 				90ED2BFB25BDB04900ADFF04 /* beatit-Bridging-Header.h */,
 				90ED2D4225BF1A5E00ADFF04 /* HtmlParser.m */,
+				90BD563825DA23CE002A7F48 /* GitHubBase64Decoder.m */,
+				90BD563E25DA240A002A7F48 /* GitHubBase64Decoder.swift */,
 			);
 			name = beatit;
 			sourceTree = "<group>";
@@ -641,7 +647,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90BD563925DA23CF002A7F48 /* GitHubBase64Decoder.m in Sources */,
 				90ED2D4325BF1A5E00ADFF04 /* HtmlParser.m in Sources */,
+				90BD563F25DA240A002A7F48 /* GitHubBase64Decoder.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				90ED2BFD25BDB04900ADFF04 /* HtmlParser.swift in Sources */,

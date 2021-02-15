@@ -75,7 +75,10 @@ const useDao = () => {
       }
       // filter out the old data is exists
       const newData = iCommunities.filter((s) => s.vill !== community.vill);
-      newData.push(community);
+      newData.push({
+        ...community,
+        ...params,
+      });
       newData.sort();
       await Store.storeData(Constants.INTERESTED_COMMUNITIES, newData);
       setIsSaved(true);

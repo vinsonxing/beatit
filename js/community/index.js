@@ -10,6 +10,7 @@ import {
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {ListItem} from 'react-native-elements';
 import useDao from '../hooks/useDao';
+import useApi from '../hooks/useApi';
 import STYLES from '../../styles';
 
 const localStyle = {
@@ -19,30 +20,46 @@ const localStyle = {
   },
 };
 
+const normalizeCommunity = (comms) =>
+  comms.map((c) => {
+    if (!c.vill) {
+      c.vill = c.roadarea;
+    }
+    return c;
+  });
+
 export const CommunityList = (props) => {
-  const {
-    state: daoState,
-    addInterestedCommunity,
-    getInterestedCommunities,
-  } = useDao();
+  const {state: daoState, addInterestedCommunity} = useDao();
+  const {state: apiState, getCommunityList} = useApi();
   const swiperRef = useRef([]);
   const [curCommunity, setCurCommunity] = useState();
   const [swiping, setSwiping] = useState(false);
   const {navigation, route} = props;
   const {school, communities} = route.params;
-  const validCommunities = communities.filter((c) => !!c.vill);
+  const [validCommunities, setValidCommunities] = useState(
+    normalizeCommunity(communities) || [],
+  );
+
   useEffect(() => {
     navigation.setParams({title: school.name});
     const test = async () => {
-      const cc = await getInterestedCommunities();
-      console.log(cc);
+      if (validCommunities.length > 0) {
+        setValidCommunities(validCommunities);
+      } else {
+        // load from remote
+        const comms = await getCommunityList({
+          schoolCode: school.id,
+          level: school.junior ? 396 : 397,
+        });
+        setValidCommunities(normalizeCommunity(comms));
+      }
     };
     test();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addCommunity = async (idx) => {
-    await addInterestedCommunity(curCommunity);
+    await addInterestedCommunity(curCommunity, {level: school.level});
     swiperRef.current[idx]?.close();
   };
 
@@ -70,7 +87,7 @@ export const CommunityList = (props) => {
 
   return (
     <ScrollView style={STYLES.Styles.FlexOne}>
-      {daoState.isSavingData && (
+      {(daoState.isSavingData || apiState.isFetchingCommunityList) && (
         <View style={[STYLES.Styles.LoadingStyle, STYLES.Styles.Center]}>
           <ActivityIndicator size="large" />
         </View>

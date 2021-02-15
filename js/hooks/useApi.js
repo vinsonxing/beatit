@@ -3,7 +3,7 @@ import {NativeModules} from 'react-native';
 import {HttpService} from '../utils/dal';
 import * as Schema from './schema';
 
-const {HtmlParser} = NativeModules;
+const {HtmlParser, GitHubBase64Decoder} = NativeModules;
 const getCommunitiesURL = (code, level) =>
   `http://s1.shanghaicity.openservice.kankanews.com/searchschool/schoolsearch.php?act=getresult&condition=school&getid=${code}&level=${level}&area=420`;
 
@@ -14,6 +14,12 @@ const getCommunityListByKeywordURL = (kw) =>
   `https://sh.lianjia.com/api/headerSearch?channel=ershoufang&cityId=310000&keyword=${encodeURI(
     kw,
   )}`;
+const getInterestedCommunityListURL = () =>
+  'https://api.github.com/repos/vinsonxing/beatit/contents/js/config/interestedCommunities.json?ref=master';
+
+const getInterestedSchoolListURL = () =>
+  'https://api.github.com/repos/vinsonxing/beatit/contents/js/config/interestedSchools.json?ref=master';
+
 const useApi = () => {
   const [communityList, setCommunityList] = useState([]);
   const [isFetchingCommunityList, setIsFetchingCommunityList] = useState(false);
@@ -30,6 +36,26 @@ const useApi = () => {
   const [communityDetail, setCommunityDetail] = useState([]);
   const [isFetchingCommunity, setIsFetchingCommunity] = useState(false);
   const [isCommunityError, setIsCommunityError] = useState(false);
+
+  const [interestedSchoolList, setInterestedSchoolList] = useState([]);
+  const [
+    isFetchingInterestedSchoolList,
+    setIsFetchingInterestedSchoolList,
+  ] = useState(false);
+  const [
+    isInterestedSchoolListError,
+    setIsInterestedSchoolListError,
+  ] = useState(false);
+
+  const [interestedCommunityList, setInterestedCommunityList] = useState([]);
+  const [
+    isFetchingInterestedCommunityList,
+    setIsFetchingInterestedCommunityList,
+  ] = useState(false);
+  const [
+    isInterestedCommunityListError,
+    setIsInterestedCommunityListError,
+  ] = useState(false);
 
   const [communityListByKeyword, setCommunityListByKeyword] = useState([]);
   const [
@@ -136,6 +162,46 @@ const useApi = () => {
     }
   };
 
+  const getInterestedCommunityList = async () => {
+    try {
+      setIsInterestedCommunityListError(false);
+      setIsFetchingInterestedCommunityList(true);
+      const url = getInterestedCommunityListURL();
+      const result = await HttpService.getData(url);
+      let data = [];
+      let {content} = result;
+      data = GitHubBase64Decoder.decode(content);
+      console.log(data);
+      setInterestedCommunityList(data);
+      return data;
+    } catch (error) {
+      setIsInterestedCommunityListError(true);
+      return [];
+    } finally {
+      setIsFetchingInterestedCommunityList(false);
+    }
+  };
+
+  const getInterestedSchoolList = async () => {
+    try {
+      setIsInterestedSchoolListError(false);
+      setIsFetchingInterestedSchoolList(true);
+      const url = getInterestedSchoolListURL();
+      const result = await HttpService.getData(url);
+      let data = [];
+      let {content} = result;
+      data = GitHubBase64Decoder.decode(content);
+      console.log(data);
+      setInterestedSchoolList(data);
+      return data;
+    } catch (error) {
+      setIsInterestedSchoolListError(true);
+      return [];
+    } finally {
+      setIsFetchingInterestedSchoolList(false);
+    }
+  };
+
   return {
     state: {
       communityList,
@@ -157,12 +223,22 @@ const useApi = () => {
       communityListByKeyword,
       isFetchingCommunityListByKeyword,
       isCommunityListByKeywordError,
+
+      interestedCommunityList,
+      isFetchingInterestedCommunityList,
+      isInterestedCommunityListError,
+
+      interestedSchoolList,
+      isFetchingInterestedSchoolList,
+      isInterestedSchoolListError,
     },
     getCommunityList,
     getHouseList,
     getHouseDetail,
     getCommunityDetail,
     getCommunityListByKeyword,
+    getInterestedCommunityList,
+    getInterestedSchoolList,
   };
 };
 

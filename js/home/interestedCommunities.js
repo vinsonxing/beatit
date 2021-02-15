@@ -61,6 +61,7 @@ export const InterestedCommunityList = (props) => {
     );
   const reload = async () => {
     const iCommunities = await getInterestedCommunities();
+    console.log(iCommunities);
     setCommunities(iCommunities);
   };
 
@@ -103,6 +104,9 @@ export const InterestedCommunityList = (props) => {
                 navigation.navigate('TagSchool', {
                   vill: curComm.vill,
                   school: curComm.school,
+                  level: curComm.level,
+                  jSchool: curComm.jSchool,
+                  jLevel: curComm.jLevel,
                 });
               } else {
                 navigation.navigate('HouseList', {
@@ -110,11 +114,24 @@ export const InterestedCommunityList = (props) => {
                 });
               }
             }}>
-            {l.school && (
-              <View style={localStyles.badgeCnt}>
-                <Badge status={'primary'} value={l.school} />
-              </View>
-            )}
+            <View style={localStyles.badgeCnt}>
+              {l.school && (
+                <View>
+                  <Badge
+                    status={l.level < 3 ? 'success' : 'primary'}
+                    value={`${l.school}-梯队${l.level || '?'}`}
+                  />
+                </View>
+              )}
+              {l.jSchool && (
+                <View>
+                  <Badge
+                    status={l.jLevel < 3 ? 'success' : 'primary'}
+                    value={`${l.jSchool}-梯队${l.jLevel || '?'}`}
+                  />
+                </View>
+              )}
+            </View>
             <ListItem.Content>
               <ListItem.Title>{l.vill}</ListItem.Title>
               <ListItem.Subtitle>{l.roadarea}</ListItem.Subtitle>

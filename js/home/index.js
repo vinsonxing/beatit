@@ -1,5 +1,6 @@
 import React, {useState, useLayoutEffect} from 'react';
 import {View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {ButtonGroup, Icon, Button} from 'react-native-elements';
 import InterestedSchools from './interestedSchools';
 import InterestedCommunities from './interestedCommunities';
@@ -59,13 +60,15 @@ export const Home = (props) => {
     headerRight: () => getRightBtn(idx === 0),
   });
 
+  const loadData = () => {};
+
   useLayoutEffect(() => {
     navigation.setOptions(getNavOptions(curIndex));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editMode, curIndex]);
 
   return (
-    <View style={STYLES.Styles.FlexOne}>
+    <SafeAreaView edges="bottom" style={STYLES.Styles.FlexOne}>
       <ButtonGroup
         onPress={setCurIndex}
         selectedIndex={curIndex}
@@ -73,8 +76,28 @@ export const Home = (props) => {
       />
       {curIndex === 0 && <InterestedCommunities {...props} />}
       {curIndex === 1 && <InterestedSchools {...props} />}
-    </View>
+      {editMode && (
+        <Button
+          titleStyle={localStyle.titleStyle}
+          icon={
+            <Icon
+              style={localStyle.iconStyle}
+              name="sync"
+              size={20}
+              color="white"
+              type="antdesign"
+            />
+          }
+          title={`下载感兴趣的${curIndex === 0 ? '小区' : '学校'}`}
+        />
+      )}
+    </SafeAreaView>
   );
+};
+
+const localStyle = {
+  titleStyle: {paddingVertical: 10},
+  iconStyle: {marginRight: 10},
 };
 
 export default Home;

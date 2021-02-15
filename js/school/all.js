@@ -84,7 +84,7 @@ export const AllSchoolList = (props) => {
       level: curSchool.junior ? 396 : 397,
     });
     await addInterestedSchool(curSchool.value, communities, {
-      junior: curSchool.junior,
+      junior: curSchool.junior || false,
       duo: curSchool.duo,
       level: curSchool.level,
     });
