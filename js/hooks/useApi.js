@@ -168,6 +168,7 @@ const useApi = () => {
       setIsFetchingInterestedCommunityList(true);
       const url = getInterestedCommunityListURL();
       const result = await HttpService.getData(url);
+      console.log('==>' + url);
       let data = [];
       let {content} = result;
       data = GitHubBase64Decoder.decode(content);

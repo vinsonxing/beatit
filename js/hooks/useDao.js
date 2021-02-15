@@ -56,6 +56,20 @@ const useDao = () => {
     return Array.isArray(iSchools) && iSchools.length > 0 ? iSchools : [];
   };
 
+  // replace all schools
+  const addInterestedSchools = async (schools) => {
+    try {
+      setIsSavingData(true);
+      setIsSaved(false);
+      await Store.storeData(Constants.INTERESTED_SCHOOLS, schools);
+      setIsSaved(true);
+    } catch (error) {
+      console.warn('Should not go here');
+    } finally {
+      setIsSavingData(false);
+    }
+  };
+
   const removeInterestedSchool = async (code) => {
     const schools = await getInterestedSchools();
     if (Array.isArray(schools)) {
@@ -96,6 +110,19 @@ const useDao = () => {
       : [];
   };
 
+  const addInterestedCommunities = async (communities) => {
+    try {
+      setIsSavingData(true);
+      setIsSaved(false);
+      await Store.storeData(Constants.INTERESTED_COMMUNITIES, communities);
+      setIsSaved(true);
+    } catch (error) {
+      console.warn('Should not go here');
+    } finally {
+      setIsSavingData(false);
+    }
+  };
+
   const removeInterestedCommunity = async (community) => {
     const iCommunities = await getInterestedCommunities();
     if (Array.isArray(iCommunities)) {
@@ -109,6 +136,14 @@ const useDao = () => {
     }
   };
 
+  const cleanInterestedCommunities = async () => {
+    await Store.removeData(Constants.INTERESTED_COMMUNITIES);
+  };
+
+  const cleanInterestedSchools = async () => {
+    await Store.removeData(Constants.INTERESTED_SCHOOLS);
+  };
+
   return {
     state: {
       isSavingData,
@@ -120,6 +155,10 @@ const useDao = () => {
     addInterestedCommunity,
     getInterestedCommunities,
     removeInterestedCommunity,
+    cleanInterestedCommunities,
+    cleanInterestedSchools,
+    addInterestedCommunities,
+    addInterestedSchools,
   };
 };
 

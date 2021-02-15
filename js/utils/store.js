@@ -10,7 +10,7 @@ export const storeData = async (key, value) => {
     }
     await AsyncStorage.setItem(key, storeValue);
   } catch (e) {
-    console.error(`store data error key=${key} value=${JSON.stringify(value)}`);
+    console.warn(`store data error key=${key} value=${JSON.stringify(value)}`);
   }
 };
 
@@ -22,5 +22,14 @@ export const getData = async (key) => {
   } catch (e) {
     // may not json object
     return ret;
+  }
+};
+
+export const removeData = async (key) => {
+  try {
+    await AsyncStorage.removeItem(key);
+  } catch (e) {
+    // may not json object
+    console.warn('should not be here');
   }
 };

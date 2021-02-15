@@ -1,10 +1,12 @@
 import React, {useState, useLayoutEffect} from 'react';
-import {View} from 'react-native';
+import {Alert} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ButtonGroup, Icon, Button} from 'react-native-elements';
 import InterestedSchools from './interestedSchools';
 import InterestedCommunities from './interestedCommunities';
 import STYLES from '../../styles';
+import useDao from '../hooks/useDao';
+import useApi from '../hooks/useApi';
 
 const EDIT_MODE = '完成';
 const VIEW_MODE = '管理';
@@ -12,6 +14,8 @@ export const Home = (props) => {
   const [editMode, setEditMode] = useState(false);
   const {navigation} = props;
   const [curIndex, setCurIndex] = useState(0);
+  const {addInterestedCommunities, addInterestedSchools} = useDao();
+  const {getInterestedCommunityList, getInterestedSchoolList} = useApi();
 
   const buttons = ['小区', '学校'];
 
@@ -60,7 +64,35 @@ export const Home = (props) => {
     headerRight: () => getRightBtn(idx === 0),
   });
 
-  const loadData = () => {};
+  const showAlert = (community) =>
+    Alert.alert(
+      '下载',
+      `确定要替换当前[${curIndex === 0 ? '小区' : '学校'}]列表么吗?`,
+      [
+        {
+          text: '取消',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: '确定',
+          onPress: async () => {
+            await loadData();
+          },
+        },
+      ],
+      {cancelable: false},
+    );
+
+  const loadData = async () => {
+    if (curIndex === 0) {
+      const comms = await getInterestedCommunityList();
+      await addInterestedCommunities(comms);
+    } else if (curIndex === 1) {
+      const schs = await getInterestedSchoolList();
+      await addInterestedSchools(schs);
+    }
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions(getNavOptions(curIndex));
@@ -78,6 +110,7 @@ export const Home = (props) => {
       {curIndex === 1 && <InterestedSchools {...props} />}
       {editMode && (
         <Button
+          onPress={showAlert}
           titleStyle={localStyle.titleStyle}
           icon={
             <Icon
