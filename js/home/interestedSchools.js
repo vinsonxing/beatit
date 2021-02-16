@@ -54,16 +54,19 @@ export const InterestedSchoolList = (props) => {
     );
   const reload = async () => {
     let iSchools = await getInterestedSchools();
-    console.log(
-      iSchools.map((i) => {
-        i.communities = undefined;
-        return i;
-      }),
-    );
-    // if (Array.isArray(iSchools) && iSchools.length === 0) {
-    // iSchools = DEFAULT_SCHOOLS;
-    // }
-    setSchools(iSchools.sort((a, b) => a.level - b.level));
+    // TO DELETE
+    // const dd = iSchools.map((i) => {
+    //   i.communities = undefined;
+    //   return i;
+    // });
+    // console.log(JSON.stringify(dd));
+    let sortedSchools = [];
+    if (Array.isArray(iSchools) && iSchools.length > 0) {
+      sortedSchools = iSchools
+        .sort((a, b) => a.level - b.level)
+        .sort((c, d) => c.junior - d.junior);
+    }
+    setSchools(sortedSchools);
   };
 
   const refresh = async () => {

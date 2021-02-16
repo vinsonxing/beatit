@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 // import {NativeModules} from 'react-native';
+// import Clipboard from '@react-native-clipboard/clipboard';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
@@ -22,6 +23,7 @@ function App() {
     const aa = async () => {
       // console.log(HtmlParser);
       console.log('start parsing');
+      // Clipboard.setString('hello world');
       // const content =
       //   '';
       // const oo = await GitHubBase64Decoder.parse(content);

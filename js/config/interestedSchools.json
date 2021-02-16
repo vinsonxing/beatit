@@ -1,5 +1,112 @@
 [
-  {"id": 3618, "name": "明珠小学[B区]", "addr": "崂山路638弄", "level": 1},
+  {
+    "id": 3839,
+    "name": "二中心小学[巨野校区]",
+    "addr": "南洋泾路280弄",
+    "junior": false,
+    "duo": true,
+    "level": 2
+  },
+  {
+    "id": 4001,
+    "name": "六师附小[羽山校区]",
+    "addr": "南洋泾路224弄",
+    "junior": false,
+    "duo": true,
+    "level": 1
+  },
+  {
+    "id": 3991,
+    "name": "六师附小[芳菲校区]",
+    "addr": "张杨北路2899弄",
+    "junior": false,
+    "level": 1
+  },
+  {
+    "id": 15815,
+    "name": "华师大二附中前滩学校",
+    "addr": "东育路95弄",
+    "junior": false,
+    "duo": true,
+    "level": 2
+  },
+  {
+    "id": 14710,
+    "name": "市实验东校",
+    "addr": "云山路2000弄",
+    "junior": false,
+    "level": 2
+  },
+  {
+    "id": 16076,
+    "name": "市实验东校",
+    "addr": "云山路2000弄",
+    "junior": true,
+    "level": 3
+  },
+  {
+    "id": 15979,
+    "name": "建平实验中学[枣庄校区]",
+    "addr": "云山路835弄",
+    "junior": true,
+    "level": 2
+  },
+  {
+    "id": 8133,
+    "name": "建平实验小学[枣庄校区]",
+    "addr": "金桥路899弄",
+    "junior": false,
+    "level": 2
+  },
+  {
+    "id": 8118,
+    "name": "建平实验小学[金业校区]",
+    "addr": "平度路388弄",
+    "junior": false,
+    "level": 2
+  },
+  {
+    "id": 80,
+    "name": "建平西校[华城校区]",
+    "addr": "乳山路505弄",
+    "junior": true,
+    "level": 1
+  },
+  {
+    "id": 3,
+    "name": "建平西校[大唐校区]",
+    "addr": "樱花路801弄",
+    "junior": true,
+    "level": 1
+  },
+  {
+    "id": 16088,
+    "name": "张江集团中学",
+    "addr": "亮秀路180弄",
+    "junior": true,
+    "level": 1
+  },
+  {
+    "id": 3744,
+    "name": "昌邑小学[陆家嘴校区]",
+    "addr": "东城路180号",
+    "junior": false,
+    "level": 2
+  },
+  {
+    "id": 3606,
+    "name": "明珠小学[A区]",
+    "addr": "南泉北路1015号",
+    "junior": false,
+    "level": 1
+  },
+  {
+    "id": 3618,
+    "name": "明珠小学[B区]",
+    "addr": "崂山路638弄",
+    "junior": false,
+    "level": 1
+  },
   {
     "id": 3648,
     "name": "明珠小学[C区]",
@@ -13,5 +120,92 @@
     "addr": "东园一村",
     "junior": true,
     "level": 3
+  },
+  {
+    "id": 3507,
+    "name": "浦师附小[东城校区]",
+    "addr": "东建路228弄",
+    "junior": false,
+    "level": 2
+  },
+  {
+    "id": 3529,
+    "name": "浦师附小[潍坊校区]",
+    "addr": "东建新村",
+    "junior": false,
+    "level": 2
+  },
+  {
+    "id": 3520,
+    "name": "浦师附小[锦绣校区]",
+    "addr": "东绣路266弄",
+    "junior": false,
+    "level": 2
+  },
+  {
+    "id": 3876,
+    "name": "海桐小学[东城校区]",
+    "addr": "东建路670弄",
+    "junior": false,
+    "duo": true,
+    "level": 2
+  },
+  {
+    "id": 3906,
+    "name": "海桐小学[樱花校区]",
+    "addr": "梅花路768弄",
+    "junior": false,
+    "duo": true,
+    "level": 2
+  },
+  {
+    "id": 7933,
+    "name": "福山外国语小学",
+    "addr": "东方路573弄",
+    "junior": false,
+    "level": 1
+  },
+  {
+    "id": 14459,
+    "name": "福山花园外国语小学",
+    "addr": "桃林路1141弄",
+    "junior": false,
+    "duo": true,
+    "level": 1
+  },
+  {
+    "id": 3654,
+    "name": "竹园小学[沪东校区]",
+    "addr": "兰城路108弄",
+    "junior": false,
+    "level": 2
+  },
+  {
+    "id": 3666,
+    "name": "竹园小学[龙阳校区]",
+    "addr": "龙汇路55弄",
+    "junior": false,
+    "level": 2
+  },
+  {
+    "id": 105,
+    "name": "进才北校",
+    "addr": "北洋泾路601号",
+    "junior": true,
+    "level": 3
+  },
+  {
+    "id": 16052,
+    "name": "进才实验中学",
+    "addr": "洋泾街道原钦洋镇东华村",
+    "junior": true,
+    "level": 3
+  },
+  {
+    "id": 13571,
+    "name": "进才实验小学",
+    "addr": "丁香路1066弄",
+    "junior": false,
+    "level": 2
   }
 ]
