@@ -1,5 +1,5 @@
 import React, {useState, useLayoutEffect, useRef} from 'react';
-import {Alert, ActivityIndicator, View} from 'react-native';
+import {Alert, ActivityIndicator, View, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {ButtonGroup, Icon, Button} from 'react-native-elements';
@@ -13,17 +13,24 @@ const EDIT_MODE = '完成';
 const VIEW_MODE = '管理';
 export const Home = (props) => {
   const [editMode, setEditMode] = useState(false);
+  const [
+    isGeneratingInterestedCommunities,
+    setIsGeneratingInterestedCommunities,
+  ] = useState(false);
+  const [populatedPercent, setPopulatedPercent] = useState(0);
   const {navigation} = props;
   const [curIndex, setCurIndex] = useState(0);
   const {
     state: daoState,
     addInterestedCommunities,
     addInterestedSchools,
+    getInterestedSchools,
   } = useDao();
   const {
     state: apiState,
     getInterestedCommunityList,
     getInterestedSchoolList,
+    getCommunityList,
   } = useApi();
 
   const buttons = ['小区', '学校'];
@@ -147,7 +154,8 @@ export const Home = (props) => {
   const showLoading = () =>
     apiState.isFetchingInterestedCommunityList ||
     apiState.isFetchingInterestedSchoolList ||
-    daoState.isSavingData;
+    daoState.isSavingData ||
+    isGeneratingInterestedCommunities;
 
   const copyToClipboard = async () => {
     if (curIndex === 0) {
@@ -159,6 +167,115 @@ export const Home = (props) => {
     }
     setMode(!editMode);
   };
+
+  const generateInterestedCommunities = async () => {
+    // load communities by schools
+    setIsGeneratingInterestedCommunities(true);
+    const newSchs = await getInterestedSchools();
+    if (!newSchs) {
+      Alert.alert('请先选择感兴趣的学校');
+      setIsGeneratingInterestedCommunities(false);
+      return;
+    }
+    if (!Array.isArray(newSchs) || newSchs.length === 0) {
+      Alert.alert('请先选择感兴趣的学校');
+      setIsGeneratingInterestedCommunities(false);
+      return;
+    }
+    // let schs = JSON.parse(schsStr);
+    // const newSchs = [];
+    // for (let i = 0; i < schs.length; i++) {
+    //   let communities = [];
+    //   if (
+    //     !Array.isArray(schs[i].communities) ||
+    //     schs[i].communities.length === 0
+    //   ) {
+    //     communities = await getCommunityList({
+    //       schoolCode: schs[i].id,
+    //       level: schs[i].junior ? 396 : 397,
+    //     });
+    //   }
+    //   schs[i].communities = communities;
+    //   newSchs.push(schs[i]);
+    //   setPopulatedPercent(Math.floor((i / (schs.length - 1)) * 100));
+    // }
+    // console.log(JSON.stringify(newSchs));
+    // await addInterestedSchools(newSchs);
+
+    // to be optimized
+    const junior = newSchs.filter((s) => s.junior);
+    let juniorCommunities = [];
+    junior.forEach((j) => {
+      const jc = {jLevel: j.level, jSchool: j.name};
+      const jcc = j.communities.map((jjc) => ({
+        ...jc,
+        roadarea: jjc.roadarea,
+        vill: jjc.vill,
+      }));
+      juniorCommunities = juniorCommunities.concat(jcc);
+    });
+    const primary = newSchs.filter((s) => !s.junior);
+    let primaryCommunities = [];
+    primary.forEach((p) => {
+      const pc = {level: p.level, school: p.name};
+      const pcc = p.communities.map((ppc) => ({
+        ...pc,
+        roadarea: ppc.roadarea,
+        vill: ppc.vill,
+      }));
+      primaryCommunities = primaryCommunities.concat(pcc);
+    });
+
+    const interestedCommunities = [];
+    juniorCommunities.forEach((jc) => {
+      if (!jc.vill) {
+        return;
+      }
+      const pc = primaryCommunities.find((ppc) => ppc.vill === jc.vill);
+      if (pc) {
+        interestedCommunities.push({
+          ...jc,
+          ...pc,
+        });
+      }
+    });
+    const uniqueIC = [];
+    interestedCommunities.forEach((ic) => {
+      if (uniqueIC.find((uic) => uic.vill === ic.vill)) {
+        return;
+      }
+      uniqueIC.push(ic);
+    });
+    await addInterestedCommunities(uniqueIC);
+    setIsGeneratingInterestedCommunities(false);
+  };
+
+  // school
+  // {
+  //   "id": 3839,
+  //   "name": "二中心小学[巨野校区]",
+  //   "addr": "南洋泾路280弄",
+  //   "junior": false,
+  //   "duo": true,
+  //   "level": 2
+  //   "communities": []
+  // },
+
+  //   aid: "0"
+  // id: "3987"
+  // other: ""
+  // pid: "3991"
+  // roadarea: "繁锦路1288弄"
+  // school: "六师附小[芳菲校区]"
+  // strarea: "高行镇"
+  // vill: "新城碧翠"
+
+  // jLevel: 3
+  // jSchool: "进才北校"
+  // level: 1
+  // roadarea: "(大湖王朝) 源深 浦东"
+  // school: "福山外国语"
+  // vill: "盛世年华"
 
   return (
     <SafeAreaView edges="bottom" style={STYLES.Styles.FlexOne}>
@@ -176,6 +293,21 @@ export const Home = (props) => {
       {!showLoading() && curIndex === 1 && <InterestedSchools {...props} />}
       {!showLoading() && editMode && (
         <View>
+          <Button
+            onPress={generateInterestedCommunities}
+            titleStyle={localStyle.titleStyle}
+            icon={
+              <Icon
+                style={localStyle.iconStyle}
+                name="color-fill"
+                size={20}
+                color="white"
+                type="ionicon"
+              />
+            }
+            title={'生成双学区小区并加入感兴趣小区列表'}
+          />
+          <View style={localStyle.btnSeparator} />
           <Button
             onPress={showLoadAlert}
             titleStyle={localStyle.titleStyle}
