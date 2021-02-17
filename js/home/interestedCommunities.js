@@ -74,7 +74,7 @@ export const InterestedCommunityList = (props) => {
     );
   const reload = async () => {
     const iCommunities = await getInterestedCommunities();
-    console.log(iCommunities);
+    console.log(JSON.stringify(iCommunities));
     setCommunities(iCommunities);
   };
 

@@ -162,6 +162,14 @@
   {
     "jLevel": 2,
     "jSchool": "建平实验中学[枣庄校区]",
+    "roadarea": "博山东路811弄",
+    "vill": "东方知音",
+    "level": 2,
+    "school": "建平实验小学[枣庄校区]"
+  },
+  {
+    "jLevel": 2,
+    "jSchool": "建平实验中学[枣庄校区]",
     "roadarea": "金桥路530弄",
     "vill": "栖山苑",
     "level": 2,
@@ -226,6 +234,14 @@
   {
     "jLevel": 2,
     "jSchool": "建平实验中学[枣庄校区]",
+    "roadarea": "云山路835弄",
+    "vill": "上海未来",
+    "level": 2,
+    "school": "建平实验小学[枣庄校区]"
+  },
+  {
+    "jLevel": 2,
+    "jSchool": "建平实验中学[枣庄校区]",
     "roadarea": "枣庄路399弄",
     "vill": "金桥瑞仕花园",
     "level": 2,
@@ -246,6 +262,14 @@
     "vill": "福山小区",
     "level": 1,
     "school": "福山外国语小学"
+  },
+  {
+    "jLevel": 1,
+    "jSchool": "建平西校[华城校区]",
+    "roadarea": "灵山路730弄",
+    "vill": "教师公寓",
+    "level": 2,
+    "school": "二中心小学[巨野校区]"
   },
   {
     "jLevel": 1,
@@ -306,6 +330,14 @@
   {
     "jLevel": 1,
     "jSchool": "建平西校[大唐校区]",
+    "roadarea": "白杨路199弄",
+    "vill": "大唐盛世花园",
+    "level": 2,
+    "school": "海桐小学[樱花校区]"
+  },
+  {
+    "jLevel": 1,
+    "jSchool": "建平西校[大唐校区]",
     "roadarea": "樱花路802弄",
     "vill": "大唐国际公寓",
     "level": 2,
@@ -350,6 +382,14 @@
     "vill": "桃林二小区",
     "level": 1,
     "school": "福山花园外国语小学"
+  },
+  {
+    "jLevel": 3,
+    "jSchool": "进才北校",
+    "roadarea": "灵山路708弄",
+    "vill": "申立苑一期",
+    "level": 2,
+    "school": "二中心小学[巨野校区]"
   },
   {
     "jLevel": 3,
@@ -458,6 +498,14 @@
   {
     "jLevel": 3,
     "jSchool": "进才北校",
+    "roadarea": "羽山路1000弄",
+    "vill": "森林湾",
+    "level": 1,
+    "school": "六师附小[羽山校区]"
+  },
+  {
+    "jLevel": 3,
+    "jSchool": "进才北校",
     "roadarea": "羽山路100弄",
     "vill": "盛世年华",
     "level": 1,
@@ -530,6 +578,14 @@
   {
     "jLevel": 3,
     "jSchool": "进才北校",
+    "roadarea": "张杨路2242弄",
+    "vill": "翡翠湾",
+    "level": 1,
+    "school": "六师附小[羽山校区]"
+  },
+  {
+    "jLevel": 3,
+    "jSchool": "进才北校",
     "roadarea": "张杨路2600弄",
     "vill": "广洋华景苑",
     "level": 1,
@@ -540,6 +596,14 @@
     "jSchool": "进才实验中学",
     "roadarea": "丁香路1066弄",
     "vill": "中邦晶座",
+    "level": 2,
+    "school": "进才实验小学"
+  },
+  {
+    "jLevel": 3,
+    "jSchool": "进才实验中学",
+    "roadarea": "丁香路1089弄",
+    "vill": "中邦风雅颂（联洋花园丁香苑）",
     "level": 2,
     "school": "进才实验小学"
   },
@@ -650,8 +714,24 @@
   {
     "jLevel": 3,
     "jSchool": "进才实验中学",
+    "roadarea": "柳杉路99弄",
+    "vill": "广洋新景苑",
+    "level": 2,
+    "school": "进才实验小学"
+  },
+  {
+    "jLevel": 3,
+    "jSchool": "进才实验中学",
     "roadarea": "罗山路1502弄",
     "vill": "吉云公寓",
+    "level": 2,
+    "school": "进才实验小学"
+  },
+  {
+    "jLevel": 3,
+    "jSchool": "进才实验中学",
+    "roadarea": "罗山路1700弄",
+    "vill": "天合金桂家园、锦绣小区",
     "level": 2,
     "school": "进才实验小学"
   },

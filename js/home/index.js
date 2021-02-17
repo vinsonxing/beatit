@@ -229,7 +229,13 @@ export const Home = (props) => {
       if (!jc.vill) {
         return;
       }
-      const pc = primaryCommunities.find((ppc) => ppc.vill === jc.vill);
+      const pc = primaryCommunities.find(
+        (ppc) =>
+          ppc.vill &&
+          (ppc.vill === jc.vill ||
+            ppc.vill.includes(jc.vill) ||
+            jc.vill.includes(ppc.vill)),
+      );
       if (pc) {
         interestedCommunities.push({
           ...jc,
