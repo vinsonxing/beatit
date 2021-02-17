@@ -153,7 +153,9 @@ export const InterestedCommunityList = (props) => {
           renderRightActions={(p) => addButton(p, i)}
           onSwipeableRightWillOpen={() => {
             setCurComm(l);
-            swiperRef.current[openedItemIdx]?.close();
+            if (openedItemIdx !== i) {
+              swiperRef.current[openedItemIdx]?.close();
+            }
             setOpenedItemIdx(i);
           }}>
           <ListItem
