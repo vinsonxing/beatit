@@ -79,6 +79,10 @@ const useDao = () => {
   };
 
   const addInterestedCommunity = async (community, params = {}) => {
+    await _addInterestedCommunity(community, false, params);
+  };
+
+  const _addInterestedCommunity = async (community, insert, params = {}) => {
     try {
       setIsSavingData(true);
       setIsSaved(false);
@@ -89,10 +93,17 @@ const useDao = () => {
       }
       // filter out the old data is exists
       const newData = iCommunities.filter((s) => s.vill !== community.vill);
-      newData.push({
-        ...community,
-        ...params,
-      });
+      if (insert) {
+        newData.unshift({
+          ...community,
+          ...params,
+        });
+      } else {
+        newData.push({
+          ...community,
+          ...params,
+        });
+      }
       newData.sort();
       await Store.storeData(Constants.INTERESTED_COMMUNITIES, newData);
       setIsSaved(true);
@@ -101,6 +112,10 @@ const useDao = () => {
     } finally {
       setIsSavingData(false);
     }
+  };
+
+  const insertInterestedCommunity = async (community, insert, params = {}) => {
+    await _addInterestedCommunity(community, insert, params);
   };
 
   const getInterestedCommunities = async () => {
@@ -153,6 +168,7 @@ const useDao = () => {
     getInterestedSchools,
     removeInterestedSchool,
     addInterestedCommunity,
+    insertInterestedCommunity,
     getInterestedCommunities,
     removeInterestedCommunity,
     cleanInterestedCommunities,

@@ -1,12 +1,14 @@
-import React, {useState, useEffect, useLayoutEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   ScrollView,
   Alert,
   TouchableOpacity,
   RefreshControl,
   View,
+  Animated,
 } from 'react-native';
 import {ListItem, Icon, Badge} from 'react-native-elements';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 import useDao from '../hooks/useDao';
 import STYLES from '../../styles';
 
@@ -22,14 +24,25 @@ const localStyles = {
     justifyContent: 'center',
     right: 20,
   },
+  addBtn: {
+    width: 192,
+  },
 };
+
 export const InterestedCommunityList = (props) => {
   const [communities, setCommunities] = useState([]);
+  const [curComm, setCurComm] = useState({});
+  const [openedItemIdx, setOpenedItemIdx] = useState(-1);
+  const swiperRef = useRef([]);
   const {navigation, route} = props;
   const editMode = route.params && route.params.editMode;
   const [refreshing, setRefreshing] = React.useState(false);
 
-  const {getInterestedCommunities, removeInterestedCommunity} = useDao();
+  const {
+    getInterestedCommunities,
+    removeInterestedCommunity,
+    insertInterestedCommunity,
+  } = useDao();
 
   useEffect(() => {
     async function getData() {
@@ -71,6 +84,47 @@ export const InterestedCommunityList = (props) => {
     setRefreshing(false);
   };
 
+  const showIcon = (l) =>
+    editMode ? (
+      <TouchableOpacity
+        onPress={() => {
+          showAlert(l);
+        }}>
+        <Icon name="circle-with-minus" type="entypo" color="red" />
+      </TouchableOpacity>
+    ) : null;
+
+  const addButton = (progress, idx) => {
+    const trans = progress.interpolate({
+      inputRange: [0, 1],
+      outputRange: [72, 0],
+    });
+
+    return (
+      <Animated.View
+        style={{...localStyles.addBtn, transform: [{translateX: trans}]}}>
+        <TouchableOpacity
+          style={[
+            STYLES.Styles.FlexOne,
+            STYLES.Styles.Center,
+            STYLES.Styles.BackgroundColor(STYLES.Colors.red),
+          ]}
+          onPress={async () => {
+            curComm.favorite = !curComm.favorite;
+            await swiperRef.current[idx].close();
+            await insertInterestedCommunity(curComm, !!curComm.favorite);
+            await reload();
+          }}>
+          <Icon
+            name={curComm.favorite ? 'pin-off' : 'pin'}
+            type="material-community"
+            color={STYLES.Colors.white}
+          />
+        </TouchableOpacity>
+      </Animated.View>
+    );
+  };
+
   return (
     <ScrollView
       style={[STYLES.Styles.FlexOne]}
@@ -87,58 +141,71 @@ export const InterestedCommunityList = (props) => {
         />
       )}
       {communities.map((l, i) => (
-        <ListItem key={i} bottomDivider>
-          {editMode && (
+        <Swipeable
+          key={i}
+          ref={(el) => {
+            if (!swiperRef.current) {
+              swiperRef.current = [];
+            }
+            swiperRef.current[i] = el;
+          }}
+          rightThreshold={40}
+          renderRightActions={(p) => addButton(p, i)}
+          onSwipeableRightWillOpen={() => {
+            setCurComm(l);
+            swiperRef.current[openedItemIdx]?.close();
+            setOpenedItemIdx(i);
+          }}>
+          <ListItem
+            bottomDivider
+            containerStyle={
+              l.favorite ? {backgroundColor: STYLES.Colors.lightSilver} : {}
+            }>
+            {showIcon(l)}
             <TouchableOpacity
+              style={[STYLES.Styles.FlexOne, STYLES.Styles.FlexRowDirection]}
               onPress={() => {
-                showAlert(l);
+                let curComm = l;
+                if (editMode) {
+                  navigation.navigate('TagSchool', {
+                    vill: curComm.vill,
+                    school: curComm.school,
+                    level: curComm.level,
+                    jSchool: curComm.jSchool,
+                    jLevel: curComm.jLevel,
+                  });
+                } else {
+                  navigation.navigate('HouseList', {
+                    community: curComm.vill,
+                  });
+                }
               }}>
-              <Icon name="circle-with-minus" type="entypo" color="red" />
+              <View style={localStyles.badgeCnt}>
+                {l.school && (
+                  <View>
+                    <Badge
+                      status={l.level < 3 ? 'success' : 'primary'}
+                      value={`${l.school}-梯队${l.level || '?'}`}
+                    />
+                  </View>
+                )}
+                {l.jSchool && (
+                  <View>
+                    <Badge
+                      status={l.jLevel < 3 ? 'success' : 'primary'}
+                      value={`${l.jSchool}-梯队${l.jLevel || '?'}`}
+                    />
+                  </View>
+                )}
+              </View>
+              <ListItem.Content>
+                <ListItem.Title>{l.vill}</ListItem.Title>
+                <ListItem.Subtitle>{l.roadarea}</ListItem.Subtitle>
+              </ListItem.Content>
+              <ListItem.Chevron />
             </TouchableOpacity>
-          )}
-          <TouchableOpacity
-            style={[STYLES.Styles.FlexOne, STYLES.Styles.FlexRowDirection]}
-            onPress={() => {
-              let curComm = l;
-              if (editMode) {
-                navigation.navigate('TagSchool', {
-                  vill: curComm.vill,
-                  school: curComm.school,
-                  level: curComm.level,
-                  jSchool: curComm.jSchool,
-                  jLevel: curComm.jLevel,
-                });
-              } else {
-                navigation.navigate('HouseList', {
-                  community: curComm.vill,
-                });
-              }
-            }}>
-            <View style={localStyles.badgeCnt}>
-              {l.school && (
-                <View>
-                  <Badge
-                    status={l.level < 3 ? 'success' : 'primary'}
-                    value={`${l.school}-梯队${l.level || '?'}`}
-                  />
-                </View>
-              )}
-              {l.jSchool && (
-                <View>
-                  <Badge
-                    status={l.jLevel < 3 ? 'success' : 'primary'}
-                    value={`${l.jSchool}-梯队${l.jLevel || '?'}`}
-                  />
-                </View>
-              )}
-            </View>
-            <ListItem.Content>
-              <ListItem.Title>{l.vill}</ListItem.Title>
-              <ListItem.Subtitle>{l.roadarea}</ListItem.Subtitle>
-            </ListItem.Content>
-            <ListItem.Chevron />
-          </TouchableOpacity>
-        </ListItem>
+          </ListItem>
+        </Swipeable>
       ))}
     </ScrollView>
   );

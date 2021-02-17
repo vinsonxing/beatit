@@ -17,7 +17,6 @@ export const Home = (props) => {
     isGeneratingInterestedCommunities,
     setIsGeneratingInterestedCommunities,
   ] = useState(false);
-  const [populatedPercent, setPopulatedPercent] = useState(0);
   const {navigation} = props;
   const [curIndex, setCurIndex] = useState(0);
   const {
@@ -30,7 +29,6 @@ export const Home = (props) => {
     state: apiState,
     getInterestedCommunityList,
     getInterestedSchoolList,
-    getCommunityList,
   } = useApi();
 
   const buttons = ['小区', '学校'];
