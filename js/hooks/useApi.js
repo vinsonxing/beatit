@@ -3,6 +3,7 @@ import {NativeModules} from 'react-native';
 import {HttpService} from '../utils/dal';
 import * as Schema from './schema';
 
+const logger = console.getLogger('UseAPi');
 const {HtmlParser, GitHubBase64Decoder} = NativeModules;
 const getCommunitiesURL = (code, level) =>
   `http://s1.shanghaicity.openservice.kankanews.com/searchschool/schoolsearch.php?act=getresult&condition=school&getid=${code}&level=${level}&area=420`;
@@ -90,6 +91,7 @@ const useApi = () => {
       setIsHouseListError(false);
       setIsFetchingHouseList(true);
       const url = getHouseListURL(community);
+      logger.debug(`Request URL: ${url}`);
       const result = await HtmlParser.parse(url, Schema.houseListSchemas);
       setHouseList(result);
       return result;
@@ -107,6 +109,7 @@ const useApi = () => {
     try {
       setIsHouseError(false);
       setIsFetchingHouse(true);
+      logger.debug(`Request URL: ${url}`);
       const result = await HtmlParser.parse(url, Schema.houseDetailSchema);
       setHouseDetail(result);
       return {...detail, imgs: result};
@@ -122,6 +125,7 @@ const useApi = () => {
     try {
       setIsCommunityError(false);
       setIsFetchingCommunity(true);
+      logger.debug(`Request URL: ${url}`);
       const result = await HtmlParser.parse(url, Schema.communityDetailScheme);
       if (Array.isArray(result) && result.length > 0) {
         setCommunityDetail(result[0]);
@@ -168,7 +172,6 @@ const useApi = () => {
       setIsFetchingInterestedCommunityList(true);
       const url = getInterestedCommunityListURL();
       const result = await HttpService.getData(url);
-      console.log('==>' + url);
       let data = [];
       let {content} = result;
       data = GitHubBase64Decoder.decode(content);

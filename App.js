@@ -2,6 +2,8 @@
 import React, {useState, useEffect} from 'react';
 // import {NativeModules} from 'react-native';
 // import Clipboard from '@react-native-clipboard/clipboard';
+// eslint-disable-next-line no-unused-vars
+import Log from './js/utils/logging';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {SafeAreaProvider} from 'react-native-safe-area-context';

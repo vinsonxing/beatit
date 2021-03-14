@@ -2,49 +2,49 @@
 export const houseListSchemas = [
   {
     field: 'title',
-    selector: '.sellListContent.LOGCLICKDATA li .title a',
+    selector: '.sellListContent li.LOGCLICKDATA .title a',
     type: 'String',
   },
   {
     field: 'img',
-    selector: '.sellListContent.LOGCLICKDATA li a.img img.lj-lazy',
+    selector: '.sellListContent li.LOGCLICKDATA a.img img.lj-lazy',
     type: 'String',
     attribute: 'data-original',
   },
   {
     field: 'detailLink',
-    selector: '.sellListContent.LOGCLICKDATA li .title a',
+    selector: '.sellListContent li.LOGCLICKDATA .title a',
     type: 'String',
     attribute: 'href',
   },
   {
     field: 'positionInfo',
-    selector: '.sellListContent.LOGCLICKDATA li .positionInfo',
+    selector: '.sellListContent li.LOGCLICKDATA .positionInfo',
     type: 'String',
   },
   {
     field: 'houseInfo',
-    selector: '.sellListContent.LOGCLICKDATA li .houseInfo',
+    selector: '.sellListContent li.LOGCLICKDATA .houseInfo',
     type: 'String',
   },
   {
     field: 'followInfo',
-    selector: '.sellListContent.LOGCLICKDATA li .followInfo',
+    selector: '.sellListContent li.LOGCLICKDATA .followInfo',
     type: 'String',
   },
   {
     field: 'priceInfo',
-    selector: '.sellListContent.LOGCLICKDATA li .priceInfo .totalPrice',
+    selector: '.sellListContent li.LOGCLICKDATA .priceInfo .totalPrice',
     type: 'String',
   },
   {
     field: 'unitPrice',
-    selector: '.sellListContent.LOGCLICKDATA li .priceInfo .unitPrice',
+    selector: '.sellListContent li.LOGCLICKDATA .priceInfo .unitPrice',
     type: 'String',
   },
   {
     field: 'tag',
-    selector: '.sellListContent.LOGCLICKDATA li .tag',
+    selector: '.sellListContent li.LOGCLICKDATA .tag',
     type: 'StringOfArray',
     moreSelector: 'span',
     separator: ' ',

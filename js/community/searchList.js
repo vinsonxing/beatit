@@ -89,10 +89,7 @@ export const CommunitySearchList = (props) => {
         lightTheme
         value={keyword}
       />
-      <ScrollView
-        style={STYLES.Styles.FlexOne}
-        scrollEnabled={!swiping}
-        contentContainerStyle={STYLES.Styles.FlexOne}>
+      <ScrollView style={STYLES.Styles.FlexOne} scrollEnabled={!swiping}>
         {(cListState.isFetchingCommunityListByKeyword ||
           daoState.isSavingData) && (
           <View

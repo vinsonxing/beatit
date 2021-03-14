@@ -1,5 +1,6 @@
 import * as Utils from './index';
 
+const logger = console.getLogger('DAL');
 const FetchMethod = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
 const FetchOption = {
   method: FetchMethod[0], // *GET, POST, PUT, DELETE, etc.
@@ -42,6 +43,7 @@ class DataService {
       if (params.abortController) {
         option.signal = params.abortController.signal;
       }
+      logger.info(`Request URL: ${url}`);
 
       return fetch(url, option)
         .then(async (response) => {
