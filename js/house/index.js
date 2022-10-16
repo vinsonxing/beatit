@@ -133,7 +133,7 @@ export const HouseList = (props) => {
                     </View>
                     <View style={localStyles.priceCnt}>
                       <ListItem.Subtitle style={localStyles.itemPadding(10)}>
-                        {h.unitPrice && h.unitPrice.substring(2)}
+                        {h.unitPrice || ""}
                       </ListItem.Subtitle>
                       <ListItem.Subtitle style={localStyles.price}>
                         {h.priceInfo}

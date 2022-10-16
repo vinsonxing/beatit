@@ -234,7 +234,8 @@ export const Home = (props) => {
           ppc.vill &&
           (ppc.vill === jc.vill ||
             ppc.vill.includes(jc.vill) ||
-            jc.vill.includes(ppc.vill)),
+            jc.vill.includes(ppc.vill) ||
+            jc.roadarea == ppc.roadarea),
       );
       if (pc) {
         interestedCommunities.push({
