@@ -56,7 +56,6 @@ export const TagSchool = (props) => {
       <Card>
         <Card.Title>基本信息</Card.Title>
         <Input
-          disabled
           placeholder="小区"
           value={community}
           onChangeText={(v) => setCommunity(v)}
