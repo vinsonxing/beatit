@@ -8,14 +8,18 @@ import STYLES from '../../styles';
 
 export const TagSchool = (props) => {
   const {navigation, route} = props;
-  const {getInterestedCommunities, addInterestedCommunity} = useDao();
-  const [community, setCommunity] = useState(route.params?.vill);
+  const {getInterestedCommunities, addInterestedCommunity, insertInterestedCommunity} = useDao();
+  const [community] = useState(route.params?.vill);
+  const [newCommunity, setNewCommunity] = useState(route.params?.vill);
   const [school, setSchool] = useState(route.params?.school);
   const [jSchool, setJSchool] = useState(route.params?.jSchool);
   const [level, setLevel] = useState(route.params?.level || 0);
   const [jLevel, setJLevel] = useState(route.params?.jLevel || 0);
+  const [watch, setWatch] = useState(route.params?.watch || false);
   const pPickerRef = useRef();
   const jPickerRef = useRef();
+
+
 
   const levels = [
     {label: '第一梯度', value: '1'},
@@ -40,15 +44,20 @@ export const TagSchool = (props) => {
     const iComms = await getInterestedCommunities();
     const targetComm = iComms.find((c) => c.vill === community);
     if (targetComm) {
-      await addInterestedCommunity({
+      if (!watch && targetComm.favorite)  {
+        targetComm.favorite = false;
+      }
+      await insertInterestedCommunity({
         ...targetComm,
+        vill: newCommunity,
         school,
         level,
         jSchool,
         jLevel,
-      });
+        watch
+      }, watch);
     }
-    navigation.goBack();
+    navigation.goBack({refresh: true});
   };
 
   return (
@@ -57,8 +66,8 @@ export const TagSchool = (props) => {
         <Card.Title>基本信息</Card.Title>
         <Input
           placeholder="小区"
-          value={community}
-          onChangeText={(v) => setCommunity(v)}
+          value={newCommunity}
+          onChangeText={(v) => {setNewCommunity(v)}}
         />
 
         <Card.Title>小学</Card.Title>
@@ -107,6 +116,11 @@ export const TagSchool = (props) => {
             items={levels}
           />
         </View>
+        <CheckBox
+          title="特别关注"
+          checked={watch}
+          onPress={() => setWatch(!watch)}
+        />
         <Button title="保存" onPress={save} />
       </Card>
     </ScrollView>

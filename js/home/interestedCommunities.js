@@ -52,6 +52,18 @@ export const InterestedCommunityList = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    // Subscribe for the focus Listener
+    const unsubscribe = navigation.addListener('focus', async () => {
+      await reload();
+    });
+ 
+    return () => {
+      // Unsubscribe for the focus Listener
+      unsubscribe;
+    };
+  }, [navigation]);
+
   const showAlert = (community) =>
     Alert.alert(
       '删除',
@@ -161,7 +173,8 @@ export const InterestedCommunityList = (props) => {
           <ListItem
             bottomDivider
             containerStyle={
-              l.favorite ? {backgroundColor: STYLES.Colors.lightSilver} : {}
+              [l.favorite ? {backgroundColor: STYLES.Colors.lightSilver} : {},
+                l.watch ? {borderRightWidth: 5, borderRightColor: "red"}: {}]
             }>
             {showIcon(l)}
             <TouchableOpacity
@@ -175,6 +188,7 @@ export const InterestedCommunityList = (props) => {
                     level: curComm.level,
                     jSchool: curComm.jSchool,
                     jLevel: curComm.jLevel,
+                    watch: curComm.watch
                   });
                 } else {
                   navigation.navigate('HouseList', {
