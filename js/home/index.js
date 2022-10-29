@@ -11,6 +11,7 @@ import useApi from '../hooks/useApi';
 
 const EDIT_MODE = '完成';
 const VIEW_MODE = '管理';
+const logger = console.getLogger('Home');
 export const Home = (props) => {
   const [editMode, setEditMode] = useState(false);
   const [
@@ -223,6 +224,7 @@ export const Home = (props) => {
       }));
       primaryCommunities = primaryCommunities.concat(pcc);
     });
+    console.log("aaaa");
 
     const interestedCommunities = [];
     juniorCommunities.forEach((jc) => {
@@ -231,16 +233,16 @@ export const Home = (props) => {
       }
       const pc = primaryCommunities.find(
         (ppc) =>
-          ppc.vill &&
           (ppc.vill === jc.vill ||
             ppc.vill.includes(jc.vill) ||
-            jc.vill.includes(ppc.vill) ||
+            (jc.vill.includes(ppc.vill) && ppc.vill) ||
             jc.roadarea == ppc.roadarea),
       );
+      
       if (pc) {
         interestedCommunities.push({
-          ...jc,
           ...pc,
+          ...jc,
         });
       }
     });
